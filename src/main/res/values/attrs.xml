@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CircleRectShape">
+        <attr name="CircleStartAngle" format="integer" />.
+        <attr name="CircleEndAngle" format="integer" />.
+        <attr name="CircleAnimDuration" format="integer" />
+    </declare-styleable>
+
+</resources>
