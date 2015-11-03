@@ -9,6 +9,6 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         app:CircleAnimDuration="600"
-        app:CircleEndAngle="270"
+        app:CircleEndAngle="180"
         app:CircleStartAngle="30" />
 </LinearLayout>

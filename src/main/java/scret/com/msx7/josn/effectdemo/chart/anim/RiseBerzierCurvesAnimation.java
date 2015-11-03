@@ -99,6 +99,11 @@ public class RiseBerzierCurvesAnimation extends BaseBerzierCurvesAnim {
 			path.cubicTo(points[i][1].x, points[i][1].y, points[i][2].x,
 					points[i][2].y, points[i][3].x, points[i][3].y);
 		}
+		Paint _paint=new Paint(paint);
+		_paint.setStyle(Paint.Style.FILL);
+		for (int i = 0; i < origin.length; i++) {
+			canvas.drawCircle(origin[i].x, origin[i].y, _paint.getStrokeWidth() / 2, _paint);
+		}
 		canvas.drawPath(path, paint);
 	}
 }

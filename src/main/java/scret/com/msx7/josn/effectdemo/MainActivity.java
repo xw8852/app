@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import scret.com.msx7.josn.effectdemo.chart.BerzierCurves;
+import scret.com.msx7.josn.effectdemo.effect.Anim3Activity;
 import scret.com.msx7.josn.effectdemo.effect.AnimShapeRectCircle;
 import scret.com.msx7.josn.effectdemo.effect.Shape2Activity;
 
@@ -14,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
     }
 
 
@@ -24,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.btn2:
                 startActivity(new Intent(this, Shape2Activity.class));
+                break;
+            case R.id.btn3:
+                startActivity(new Intent(this, Anim3Activity.class));
                 break;
         }
     }

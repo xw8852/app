@@ -62,7 +62,7 @@ public class CircleRectShape extends View {
     }
 
 
-    private static final int START_ANGLE_POINT = 90;
+    private static final int START_ANGLE_POINT = 180;
 
     private Paint paint;
     private RectF rect;
