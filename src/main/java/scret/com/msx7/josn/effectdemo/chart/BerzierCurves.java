@@ -5,7 +5,10 @@ import android.database.DataSetObservable;
 import android.database.DataSetObserver;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.CornerPathEffect;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.PathDashPathEffect;
 import android.graphics.PixelFormat;
 import android.graphics.PointF;
 import android.graphics.PorterDuff;
@@ -240,11 +243,11 @@ public class BerzierCurves extends SurfaceView implements Callback {
 
         @Override
         public void animEnd(Canvas canvas) {
-            int count = origin.length;
-            PointF[] ps = getPoint();
-            for (int i = 0; i < count; i++) {
-                canvas.drawCircle(ps[i].x, ps[i].y, 12, getPointPaint());
-            }
+//            int count = origin.length;
+//            PointF[] ps = getPoint();
+//            for (int i = 0; i < count; i++) {
+//                canvas.drawCircle(ps[i].x, ps[i].y, 12, getPointPaint());
+//            }
         }
     };
 
@@ -262,6 +265,11 @@ public class BerzierCurves extends SurfaceView implements Callback {
         paint.setColor(Color.RED);
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.STROKE);
+        Path circle = new Path();
+        circle.addCircle(0, 0, 5, Path.Direction.CCW);
+//        circle.addRect(0, 0, 8, 8, Path.Direction.CCW);
+        paint.setPathEffect(new PathDashPathEffect(circle,2, 1, PathDashPathEffect.Style.ROTATE));
+//        paint.setPathEffect(new CornerPathEffect(20f));
         return paint;
     }
 

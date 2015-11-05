@@ -4,8 +4,10 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.FrameLayout;
 
 /**
@@ -33,8 +35,9 @@ public class AnimShape extends FrameLayout {
     void init() {
         paintRect = new Paint();
         paintRect.setColor(Color.RED);
-        paintRect.setStyle(Paint.Style.FILL);
+        paintRect.setStyle(Paint.Style.FILL_AND_STROKE);
 //        paintRect.setStrokeWidth(4f);
+        paintRect.setStrokeWidth(12f);
 
         paintCircle = new Paint();
         paintCircle.setColor(Color.RED);
@@ -42,22 +45,41 @@ public class AnimShape extends FrameLayout {
         paintCircle.setStrokeWidth(4f);
     }
 
-    int raduis,centerX,centerY;
+    int raduis, centerX, centerY;
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-         raduis = getWidth() / 2;
-         centerX = (getLeft() + getRight()) / 2;
-         centerY = (getTop() + getBottom()) / 2;
-        System.out.println(centerX + "-------    "+raduis);
-        System.out.println(centerY + "AAAAAAAAAAAAAAA");
+        raduis = getWidth() / 2;
+        centerX = (getLeft() + getRight()) / 2;
+        centerY = (getTop() + getBottom()) / 2;
+        System.out.println(getMeasuredWidth() + "      getMeasured          " + getMeasuredHeight());
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        canvas.save();
+//        System.out.println(centerY + "     centerY      onDraw          ");
+//        System.out.println(centerX + "     centerX      onDraw          ");
+//        System.out.println(raduis + "     raduis      onDraw          ");
         Rect rect = new Rect(centerX - raduis, centerY - raduis, centerX + raduis, centerY + raduis);
+//        System.out.println(rect + "     rect      onDraw          ");
+//        System.out.println(getLeft() + "     getLeft()       onDraw          ");
         canvas.drawRect(rect, paintRect);
+//        canvas.restore();
+//        Path path = new Path();
+//        path.moveTo(rect.left, rect.top);
+//        path.lineTo(rect.right, rect.bottom);
+//        path.close();
+//        paintRect.setStyle(Paint.Style.STROKE);
+//        canvas.drawPath(path, paintRect);
+//        canvas.drawText(centerX + "," + raduis + "," + centerY, 0, 0, paintRect);
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+
     }
 }

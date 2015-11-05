@@ -11,9 +11,25 @@ import android.view.animation.Transformation;
 public abstract class BaseBerzierCurvesAnim extends Animation {
 	AnimationListener listener;
 	ILinePaint paint;
-	
-	
 
+
+	/**
+	 * 待验证的公式
+	 *
+	 * p1p2与p2p3的夹角
+	 *
+	 * cosa= ( (p1p2)^2  +(p2p3)^2-(p1p3)^2  )/( 2* p1p2*p2p3 )
+	 *
+	 * 那么 左右2个控制点的连线的角度   (180-a)/2
+	 *
+	 * cos（pi-a) = - cos a
+	 *
+	 * 去正角 小于 90°  cos a/2 =  +/-  开根号(（ 1+cos a)/2 )
+	 *
+	 * @param origin
+	 * @param scale
+	 * @return
+	 */
 	@SuppressLint("FloatMath")
 	public PointF[][] createCurves(PointF[] origin, float scale) {
 		int originCount = origin.length;

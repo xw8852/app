@@ -64,7 +64,7 @@ public class TrackBerzierCurvesAnimation extends BaseBerzierCurvesAnim {
 			Path path = new Path();
 			path.moveTo(origin[0].x, origin[0].y);
 			for (int i = 0; i < count; i++) {
-				path.moveTo(points[i][0].x, points[i][0].y);
+				path.lineTo(points[i][0].x, points[i][0].y);
 				path.cubicTo(points[i][1].x, points[i][1].y, points[i][2].x,
 						points[i][2].y, points[i][3].x, points[i][3].y);
 			}

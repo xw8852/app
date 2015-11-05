@@ -5,6 +5,8 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.PathDashPathEffect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
@@ -76,7 +78,10 @@ public class CircleRectShape extends View {
         paint.setStrokeWidth(strokeWidth);
         //Circle color
         paint.setColor(Color.RED);
-
+        Path circle = new Path();
+        circle.addCircle(0,0,20, Path.Direction.CCW);
+//        circle.addRect(0, 0, 8, 8, Path.Direction.CCW);
+        paint.setPathEffect(new PathDashPathEffect(circle, 5, 1, PathDashPathEffect.Style.ROTATE));
         //size 200x200 example
         rect = new RectF(strokeWidth, strokeWidth, 200 + strokeWidth, 200 + strokeWidth);
 

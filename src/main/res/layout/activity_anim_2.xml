@@ -7,8 +7,9 @@
     android:orientation="vertical">
 
     <scret.com.msx7.josn.effectdemo.effect.anim2.AnimShape
-        android:layout_width="100dp"
-        android:layout_height="100dp">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
 
     </scret.com.msx7.josn.effectdemo.effect.anim2.AnimShape>
 </LinearLayout>
