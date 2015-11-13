@@ -8,6 +8,8 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathDashPathEffect;
 import android.graphics.RectF;
+import android.graphics.drawable.shapes.RoundRectShape;
+import android.graphics.drawable.shapes.Shape;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
@@ -44,6 +46,7 @@ public class CircleRectShape extends View {
                 startAnimation(animation);
             }
         }, 300);
+
     }
 
     public CircleRectShape(Context context, AttributeSet attrs, int defStyleAttr) {

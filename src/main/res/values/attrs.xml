@@ -5,5 +5,14 @@
         <attr name="CircleEndAngle" format="integer" />.
         <attr name="CircleAnimDuration" format="integer" />
     </declare-styleable>
-
+    <declare-styleable name="AnimShape">
+        <attr name="radius" format="dimension" />
+        <attr name="radius_LT" format="dimension" />
+        <attr name="radius_LB" format="dimension" />
+        <attr name="radius_RT" format="dimension" />
+        <attr name="radius_RB" format="dimension" />
+        <attr name="solide" format="color" />
+        <attr name="strokeColor" format="color" />
+        <attr name="strokeWidth" format="dimension" />
+    </declare-styleable>
 </resources>

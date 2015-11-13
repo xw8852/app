@@ -1,85 +1,94 @@
 package scret.com.msx7.josn.effectdemo.effect.anim2;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.PaintDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RoundRectShape;
+import android.graphics.drawable.shapes.Shape;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
+
+import java.util.Arrays;
+
+import scret.com.msx7.josn.effectdemo.R;
 
 /**
  * Created by Josn on 2015/10/31.
  */
 public class AnimShape extends FrameLayout {
 
-    public AnimShape(Context context) {
-        super(context);
-    }
 
     public AnimShape(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context.obtainStyledAttributes(attrs, R.styleable.AnimShape));
     }
 
     public AnimShape(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        init(context.obtainStyledAttributes(attrs, R.styleable.AnimShape));
+
     }
+
 
     Paint paintRect;
     Paint paintCircle;
 
-    void init() {
-        paintRect = new Paint();
-        paintRect.setColor(Color.RED);
-        paintRect.setStyle(Paint.Style.FILL_AND_STROKE);
-//        paintRect.setStrokeWidth(4f);
-        paintRect.setStrokeWidth(12f);
+    float radius;
+    float radius_LT;
+    float radius_LB;
+    float radius_RT;
+    float radius_RB;
+    int color;
+    int storkColor;
+    float strokeWidth;
+    float[] outerRadii;
+    GradientDrawable drawable;
 
-        paintCircle = new Paint();
-        paintCircle.setColor(Color.RED);
-        paintCircle.setStyle(Paint.Style.STROKE);
-        paintCircle.setStrokeWidth(4f);
+    void init(TypedArray array) {
+        radius = array.getDimension(R.styleable.AnimShape_radius, 0);
+        radius_LT = array.getDimension(R.styleable.AnimShape_radius_LT, 0);
+        radius_LB = array.getDimension(R.styleable.AnimShape_radius_LB, 0);
+        radius_RT = array.getDimension(R.styleable.AnimShape_radius_RT, 0);
+        radius_RB = array.getDimension(R.styleable.AnimShape_radius_RB, 0);
+        color = array.getColor(R.styleable.AnimShape_solide, Color.BLACK);
+        storkColor = array.getColor(R.styleable.AnimShape_strokeColor, 0);
+        strokeWidth = array.getDimension(R.styleable.AnimShape_strokeWidth, 0);
+        outerRadii = new float[]{radius_LT, radius_LT, radius_RT, radius_RT, radius_LB, radius_LB, radius_RB, radius_RB};
+
+        drawable = new GradientDrawable();
+        if (radius <= 0 &&
+                (radius_LB != radius
+                        || radius_LT != radius
+                        || radius_RB != radius
+                        || radius_RT != radius)) {
+            drawable.setCornerRadii(outerRadii);
+        } else {
+            drawable.setCornerRadius(radius);
+            Arrays.fill(outerRadii, radius);
+        }
+        drawable.setColor(color);
+        drawable.setStroke((int) strokeWidth, storkColor);
+        setBackgroundDrawable(drawable);
     }
 
-    int raduis, centerX, centerY;
+
+    public void setRadius(float[] radius) {
+        drawable.setCornerRadii(radius);
+        setBackgroundDrawable(drawable);
+    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        raduis = getWidth() / 2;
-        centerX = (getLeft() + getRight()) / 2;
-        centerY = (getTop() + getBottom()) / 2;
-        System.out.println(getMeasuredWidth() + "      getMeasured          " + getMeasuredHeight());
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        canvas.save();
-//        System.out.println(centerY + "     centerY      onDraw          ");
-//        System.out.println(centerX + "     centerX      onDraw          ");
-//        System.out.println(raduis + "     raduis      onDraw          ");
-        Rect rect = new Rect(centerX - raduis, centerY - raduis, centerX + raduis, centerY + raduis);
-//        System.out.println(rect + "     rect      onDraw          ");
-//        System.out.println(getLeft() + "     getLeft()       onDraw          ");
-        canvas.drawRect(rect, paintRect);
-//        canvas.restore();
-//        Path path = new Path();
-//        path.moveTo(rect.left, rect.top);
-//        path.lineTo(rect.right, rect.bottom);
-//        path.close();
-//        paintRect.setStyle(Paint.Style.STROKE);
-//        canvas.drawPath(path, paintRect);
-//        canvas.drawText(centerX + "," + raduis + "," + centerY, 0, 0, paintRect);
-    }
 
-    @Override
-    public void draw(Canvas canvas) {
-        super.draw(canvas);
-
-    }
 }
