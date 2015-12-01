@@ -33,10 +33,8 @@ public class AnimShape extends FrameLayout {
 
     public AnimShape(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context.obtainStyledAttributes(attrs, R.styleable.AnimShape));
-
+        init(context.obtainStyledAttributes(attrs, R.styleable.AnimShape,defStyleAttr,0));
     }
-
 
     Paint paintRect;
     Paint paintCircle;

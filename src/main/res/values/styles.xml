@@ -8,4 +8,16 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TextBackGround">
+        <item name="scret.com.msx7.josn.effectdemo:radius">10dp</item>
+        <item name="scret.com.msx7.josn.effectdemo:solide">@color/colorPrimary</item>
+        <item name="scret.com.msx7.josn.effectdemo:strokeColor">@color/colorAccent</item>
+        <item name="scret.com.msx7.josn.effectdemo:strokeWidth">2dp</item>
+        <!--app:radius="10dp"-->
+        <!--android:id="@+id/shape"-->
+        <!--android:layout_margin="40dp"-->
+        <!--app:solide="@color/colorPrimary"-->
+        <!--app:strokeColor="@color/colorAccent"-->
+        <!--app:strokeWidth="2dp"-->
+    </style>
 </resources>

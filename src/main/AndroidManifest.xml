@@ -18,6 +18,8 @@
         <activity android:name=".effect.AnimShapeRectCircle" />
         <activity android:name=".effect.Shape2Activity" />
         <activity android:name=".effect.Anim3Activity" />
+        <activity android:name=".Activity3" />
+        <activity android:name=".Activity4" />
     </application>
 
 </manifest>

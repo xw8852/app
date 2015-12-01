@@ -1,7 +1,6 @@
 package scret.com.msx7.josn.effectdemo.effect;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.PointF;
 import android.os.Bundle;
 import android.view.View;
@@ -22,9 +21,9 @@ public class Anim3Activity extends Activity {
         curves = (BerzierCurves) findViewById(R.id.BerzierCurves);
         curves.setPoint(new PointF[]{
                 new PointF(10, 10),
-                new PointF(30, 50),
-                new PointF(50, 20),
-                new PointF(55, 70),
+                new PointF(20, 20),
+                new PointF(30, 30),
+                new PointF(45, 70),
                 new PointF(62, 63),
                 new PointF(72, 90)});
     }

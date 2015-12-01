@@ -11,141 +11,153 @@ import android.view.animation.Transformation;
 
 
 public class TrackBerzierCurvesAnimation extends BaseBerzierCurvesAnim {
-	int step = 5;
-	PointF[] points;
-	Paint paint;
-	Canvas canvas;
-	SurfaceHolder holder;
-	float scale;
+    int step = 5;
+    PointF[] points;
+    Paint paint;
+    Canvas canvas;
+    SurfaceHolder holder;
+    float scale;
 
-	private TrackBerzierCurvesAnimation(PointF[] points, Paint paint, float scale) {
-		super();
-		this.points = points;
-		this.paint = paint;
-		this.scale = scale;
-		if (scale < 0 || scale > 1.0f) {
-			throw new IllegalArgumentException(
-					"the params scale must between 0.0f and 1.0f");
-		}
-	}
+    private TrackBerzierCurvesAnimation(PointF[] points, Paint paint, float scale) {
+        super();
+        this.points = points;
+        this.paint = paint;
+        this.scale = scale;
+        if (scale < 0 || scale > 1.0f) {
+            throw new IllegalArgumentException(
+                    "the params scale must between 0.0f and 1.0f");
+        }
+        _points = createCurves(points, scale);
+    }
 
-	public TrackBerzierCurvesAnimation(PointF[] points, Paint paint, float scale,
-			SurfaceHolder holder, long durationMillis) {
-		this(points, paint, scale);
-		this.holder = holder;
-		setDuration(durationMillis);
-	}
+    public TrackBerzierCurvesAnimation(PointF[] points, Paint paint, float scale,
+                                       SurfaceHolder holder, long durationMillis) {
+        this(points, paint, scale);
+        this.holder = holder;
+        setDuration(durationMillis);
+        _points = createCurves(points, scale);
+    }
 
-	public TrackBerzierCurvesAnimation(PointF[] points, Paint paint, float scale,
-			Canvas canvas, long durationMillis) {
-		this(points, paint, scale);
-		this.canvas = canvas;
-		setDuration(durationMillis);
-	}
+    public TrackBerzierCurvesAnimation(PointF[] points, Paint paint, float scale,
+                                       Canvas canvas, long durationMillis) {
+        this(points, paint, scale);
+        this.canvas = canvas;
+        setDuration(durationMillis);
+        _points = createCurves(points, scale);
+    }
 
-	@Override
-	protected void transformation(float interpolatedTime, Transformation t) {
-		PointF[][] _points = createCurves(points, scale);
-		if (holder != null) {
-			Canvas canvas = holder.lockCanvas();
-			drawCurves(points, _points, canvas, interpolatedTime);
-			holder.unlockCanvasAndPost(canvas);
-		} else {
-			drawCurves(points, _points, canvas, interpolatedTime);
-		}
-	}
+    PointF[][] _points;
 
-	void drawCurves(PointF[] origin, PointF[][] points, Canvas canvas,
-			float interpolatedTime) {
-		canvas.drawColor(Color.TRANSPARENT, Mode.CLEAR);
-		calculateTimes();
-		if (interpolatedTime >= 1.0f) {
-			int count = points.length;
-			Path path = new Path();
-			path.moveTo(origin[0].x, origin[0].y);
-			for (int i = 0; i < count; i++) {
-				path.lineTo(points[i][0].x, points[i][0].y);
-				path.cubicTo(points[i][1].x, points[i][1].y, points[i][2].x,
-						points[i][2].y, points[i][3].x, points[i][3].y);
-			}
-			canvas.drawPath(path, paint);
-			onAnimEnd(canvas);
-		} else {
-			canvas.save();
-			int count = 0;
-			while (count < startTime.length) {
-				if (interpolatedTime < startTime[count]) {
-					break;
-				}
-				count++;
-			}
-			count--;
-			float t = (interpolatedTime - startTime[count]) / time[count];
-			PointF _p = new PointF(bezierNfuncX(t, points[count]),
-					bezierNfuncY(t, points[count]));
-			Path path = new Path();
-			path.moveTo(points[count][0].x, points[count][0].y);
-			float step = 0f;
-			while (step < t) {
-				_p = new PointF(bezierNfuncX(step, points[count]), bezierNfuncY(step,
-						points[count]));
-				path.lineTo(_p.x, _p.y);
-				step += 0.01f;
-			}
-			canvas.drawPath(path, paint);
-			canvas.restore();
-			int i = 0;
-			path.reset();
-			path.moveTo(origin[0].x, origin[0].y);
-			for (i = 0; i < count; i++) {
-				path.lineTo(points[i][0].x, points[i][0].y);
-				path.cubicTo(points[i][1].x, points[i][1].y, points[i][2].x,
-						points[i][2].y, points[i][3].x, points[i][3].y);
-			}
-		
-			canvas.drawPath(path, paint);
-		}
-	}
+    @Override
+    protected void transformation(float interpolatedTime, Transformation t) {
+        if (holder != null) {
+            Canvas canvas = holder.lockCanvas();
+            drawCurves(points, _points, canvas, interpolatedTime);
+            holder.unlockCanvasAndPost(canvas);
+        } else {
+            drawCurves(points, _points, canvas, interpolatedTime);
+        }
+    }
 
-	float[] time;
-	float[] startTime;
+    void drawCurves(PointF[] origin, PointF[][] points, Canvas canvas,
+                    float interpolatedTime) {
+        canvas.drawColor(Color.TRANSPARENT, Mode.CLEAR);
+        calculateTimes();
+        Paint _paint = new Paint(paint);
+        _paint.setStrokeWidth(4f);
+        _paint.setStyle(Paint.Style.FILL);
+        _paint.setColor(Color.BLUE);
 
-	void calculateTimes() {
-		if (time != null)
-			return;
-		startTime = new float[points.length - 1];
-		float sumLen = 0f;
-		float[] len = new float[points.length - 1];
-		time = new float[points.length - 1];
-		for (int i = 0; i < len.length; i++) {
-			len[i] =MathFloat.pow(points[i].x - points[i + 1].x, 2)
-					+ MathFloat.pow(points[i].y - points[i + 1].y, 2);
-			sumLen += len[i];
-		}
-		startTime[0] = 0f;
-		for (int i = 0; i < len.length; i++) {
-			time[i] = len[i] / sumLen;
+        if (interpolatedTime >= 1.0f) {
+            int count = points.length;
+            Path path = new Path();
+            path.moveTo(origin[0].x, origin[0].y);
+            for (int i = 0; i < count; i++) {
+                path.lineTo(points[i][0].x, points[i][0].y);
+                path.cubicTo(points[i][1].x, points[i][1].y, points[i][2].x, points[i][2].y, points[i][3].x, points[i][3].y);
 
-			for (int j = 0; j < i; j++) {
-				startTime[i] += time[j];
-			}
-		}
-		return;
-	}
+            }
+            canvas.drawPath(path, paint);
+            onAnimEnd(canvas);
+        } else {
+            canvas.save();
+            int count = 0;
+            while (count < startTime.length) {
+                if (interpolatedTime < startTime[count]) {
+                    break;
+                }
+                count++;
+            }
+            count--;
+            float t = (interpolatedTime - startTime[count]) / time[count];
+            PointF _p = new PointF(bezierNfuncX(t, points[count]),
+                    bezierNfuncY(t, points[count]));
+            Path path = new Path();
+            path.moveTo(points[count][0].x, points[count][0].y);
+            float step = 0f;
+            while (step < t) {
+                _p = new PointF(bezierNfuncX(step, points[count]), bezierNfuncY(step,
+                        points[count]));
+                path.lineTo(_p.x, _p.y);
+                step += 0.01f;
+            }
+            canvas.drawPath(path, paint);
+            canvas.restore();
+            int i = 0;
+            path.reset();
+            path.moveTo(origin[0].x, origin[0].y);
+            for (i = 0; i < count; i++) {
+                path.lineTo(points[i][0].x, points[i][0].y);
 
-	float bezierNfuncX(float t, PointF[] arr) {
-		float part1 = MathFloat.pow(1.0f - t, 3) * arr[0].x;
-		float part2 = 3 * t * MathFloat.pow(1 - t, 2) * arr[1].x;
-		float part3 = 3 * (1.0f - t) * MathFloat.pow(t, 2) * arr[2].x;
-		float part4 = MathFloat.pow(t, 3) * arr[3].x;
-		return part1 + part2 + part3 + part4;
-	}
+                path.cubicTo(points[i][1].x, points[i][1].y, points[i][2].x,
+                        points[i][2].y, points[i][3].x, points[i][3].y);
 
-	float bezierNfuncY(float t, PointF[] arr) {
-		float part1 = MathFloat.pow(1.0f - t, 3) * arr[0].y;
-		float part2 = 3 * t * MathFloat.pow(1 - t, 2) * arr[1].y;
-		float part3 = 3 * (1.0f - t) * MathFloat.pow(t, 2) * arr[2].y;
-		float part4 = MathFloat.pow(t, 3) * arr[3].y;
-		return part1 + part2 + part3 + part4;
-	}
+
+            }
+
+            canvas.drawPath(path, paint);
+        }
+    }
+
+    float[] time;
+    float[] startTime;
+
+    void calculateTimes() {
+        if (time != null)
+            return;
+        startTime = new float[points.length - 1];
+        float sumLen = 0f;
+        float[] len = new float[points.length - 1];
+        time = new float[points.length - 1];
+        for (int i = 0; i < len.length; i++) {
+            len[i] = MathFloat.pow(points[i].x - points[i + 1].x, 2)
+                    + MathFloat.pow(points[i].y - points[i + 1].y, 2);
+            sumLen += len[i];
+        }
+        startTime[0] = 0f;
+        for (int i = 0; i < len.length; i++) {
+            time[i] = len[i] / sumLen;
+
+            for (int j = 0; j < i; j++) {
+                startTime[i] += time[j];
+            }
+        }
+        return;
+    }
+
+    float bezierNfuncX(float t, PointF[] arr) {
+        float part1 = MathFloat.pow(1.0f - t, 3) * arr[0].x;
+        float part2 = 3 * t * MathFloat.pow(1 - t, 2) * arr[1].x;
+        float part3 = 3 * (1.0f - t) * MathFloat.pow(t, 2) * arr[2].x;
+        float part4 = MathFloat.pow(t, 3) * arr[3].x;
+        return part1 + part2 + part3 + part4;
+    }
+
+    float bezierNfuncY(float t, PointF[] arr) {
+        float part1 = MathFloat.pow(1.0f - t, 3) * arr[0].y;
+        float part2 = 3 * t * MathFloat.pow(1 - t, 2) * arr[1].y;
+        float part3 = 3 * (1.0f - t) * MathFloat.pow(t, 2) * arr[2].y;
+        float part4 = MathFloat.pow(t, 3) * arr[3].y;
+        return part1 + part2 + part3 + part4;
+    }
 }

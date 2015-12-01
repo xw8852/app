@@ -47,7 +47,7 @@ public class Shape2Activity extends Activity {
                 String s1 = s.toString();
                 s1 = s1.replaceAll("[^0-9]{1,}", "");
 
-             
+
 
             }
         };

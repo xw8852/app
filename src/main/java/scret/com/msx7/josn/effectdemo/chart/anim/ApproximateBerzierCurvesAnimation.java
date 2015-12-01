@@ -14,6 +14,7 @@ public class ApproximateBerzierCurvesAnimation extends BaseBerzierCurvesAnim {
     float start;
     float end;
     PointF[] points;
+    PointF[][] _points ;
     Paint paint;
     Canvas canvas;
     SurfaceHolder holder;
@@ -25,6 +26,7 @@ public class ApproximateBerzierCurvesAnimation extends BaseBerzierCurvesAnim {
         this.end = end;
         this.points = points;
         this.paint = paint;
+
         if (start < 0 || end > 1.0f) {
             throw new IllegalArgumentException(
                     "the params start、end must between 0.0f and 1.0f");
@@ -58,7 +60,7 @@ public class ApproximateBerzierCurvesAnimation extends BaseBerzierCurvesAnim {
 
     protected void transformation(float interpolatedTime, Transformation t) {
         float scale = (end - start) * interpolatedTime + start;
-        PointF[][] _points = createCurves(points, scale);
+        _points = createCurves(points, scale);
         if (holder != null) {
             Canvas canvas = holder.lockCanvas();
             drawCurves(points, _points, canvas);
@@ -80,13 +82,23 @@ public class ApproximateBerzierCurvesAnimation extends BaseBerzierCurvesAnim {
         int count = points.length;
         Path path = new Path();
         path.moveTo(origin[0].x, origin[0].y);
+
+        Paint _paint = new Paint(paint);
+        _paint.setStrokeWidth(4f);
+        _paint.setStyle(Paint.Style.FILL);
+        _paint.setColor(Color.BLUE);
+
         for (int i = 0; i < count; i++) {
             path.lineTo(points[i][0].x, points[i][0].y);
-            path.cubicTo(points[i][1].x, points[i][1].y, points[i][2].x,
-                    points[i][2].y, points[i][3].x, points[i][3].y);
+            path.cubicTo(points[i][1].x, points[i][1].y, points[i][2].x, points[i][2].y, points[i][3].x, points[i][3].y);
+
+            canvas.drawPoint(points[i][0].x, points[i][0].y, _paint);
+            canvas.drawPoint(points[i][3].x, points[i][3].y, _paint);
+            canvas.drawPoint(points[i][1].x, points[i][1].y, _paint);
+            canvas.drawPoint(points[i][2].x, points[i][2].y, _paint);
+
         }
-//        Paint _paint=new Paint(paint);
-//        _paint.setStyle(Paint.Style.FILL);
+
 //        for (int i = 0; i < origin.length; i++) {
 //            canvas.drawCircle(origin[i].x, origin[i].y, _paint.getStrokeWidth()/2, _paint);
 //        }

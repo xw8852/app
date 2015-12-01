@@ -5,7 +5,6 @@ import android.database.DataSetObservable;
 import android.database.DataSetObserver;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.CornerPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathDashPathEffect;
@@ -52,7 +51,7 @@ public class BerzierCurves extends SurfaceView implements Callback {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        System.out.println("   _____      minX " + event.getX() + "," + event.getY());
+//        System.out.println("   _____      minX " + event.getX() + "," + event.getY());
         return super.onTouchEvent(event);
     }
 
@@ -91,40 +90,6 @@ public class BerzierCurves extends SurfaceView implements Callback {
 
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-
-        int width;
-        int height;
-        int _pHeight;
-        int _pWidth;
-        if (origin != null) {
-
-        }
-        if (widthMode == MeasureSpec.EXACTLY) {
-            width = widthSize;
-        } else if (widthMode == MeasureSpec.AT_MOST) {
-            width = getDefaultSize(0, widthMeasureSpec);
-        } else if (widthMode == MeasureSpec.UNSPECIFIED) {
-            width = getResources().getDisplayMetrics().widthPixels;
-        }
-        if (heightMode == MeasureSpec.EXACTLY) {
-            height = heightSize;
-        } else if (heightMode == MeasureSpec.AT_MOST) {
-            height = getDefaultSize(0, widthMeasureSpec);
-        } else if (heightMode == MeasureSpec.UNSPECIFIED) {
-            height = getResources().getDisplayMetrics().heightPixels;
-        }
-        System.out.println("widthMode:" + widthMode);
-        System.out.println("heightMode:" + heightMode);
-        System.out.println("widthSize:" + widthSize);
-        System.out.println("heightSize:" + heightSize);
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
 
     public boolean isClosed() {
         return closed;
@@ -174,32 +139,25 @@ public class BerzierCurves extends SurfaceView implements Callback {
         }
         Rect rect = new Rect();
         getHitRect(rect);
-        System.out.println("   _____      minX " + rect);
-        System.out.println("   _____      minX " + minX);
-        System.out.println("   _____       minY " + minY);
-        System.out.println("   _____      maxX " + maxX);
-        System.out.println("   _____      maxY " + maxY);
+
 
         float r_minX = origin_x + 0.1f * width;
         float r_minY = origin_y - 0.1f * height;
         float r_maxX = getRight() - 0.1f * width;
         float r_maxY = getTop() + 0.1f * height;
-        float dx = (r_maxX - r_minX) / (maxX - minX);
-        float dy = (r_minY - r_maxY) / (maxY - minY);
-        System.out.println("   _____      r_minX " + r_minX);
-        System.out.println("   _____       r_minY " + r_minY);
-        System.out.println("   _____      r_maxX " + r_maxX);
-        System.out.println("   _____      r_maxY " + r_maxY);
-        System.out.println("   _____      dx " + dx);
-        System.out.println("   _____      dy " + dy);
+        int dx =(int)( (r_maxX - r_minX) / (maxX - minX));
+        int dy = (int)((r_minY - r_maxY) / (maxY - minY));
+//        L.d(" dx "+dx);
+//        L.d(" dy "+dy);
         PointF[] _arr = new PointF[origin.length];
         for (int i = 0; i < origin.length; i++) {
             PointF pf = origin[i];
-            _arr[i] = new PointF(((pf.x - minX) * dx + r_minX), (r_minY - (pf.y - minY) * dy));
-            System.out.println("   _____       " + pf.toString());
-            System.out.println("   _____       " + _arr[i]);
+            _arr[i] = new PointF( (int)(((pf.x - minX) * dx + r_minX)), (int)((r_minY - (pf.y - minY) * dy)));
+//            L.d(" point "+_arr[i]);
+//            System.out.println("   _____       " + pf.toString());
+//            System.out.println("   _____       " + _arr[i]);
         }
-        System.out.println("_____" + getMeasuredWidth() + "," + getMeasuredHeight());
+//        System.out.println("_____" + getMeasuredWidth() + "," + getMeasuredHeight());
         return _arr;
     }
 
