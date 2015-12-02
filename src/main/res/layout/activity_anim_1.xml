@@ -3,12 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical">
 
     <scret.com.msx7.josn.effectdemo.effect.anim1.CircleRectShape
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:AngleLength="240"
+        app:ArcWidth="40dp"
         app:CircleAnimDuration="600"
-        app:CircleEndAngle="180"
-        app:CircleStartAngle="30" />
+        app:CircleDrawable="@drawable/btn_circle"
+        app:CircleStartAngle="150"
+        app:DrawableHeight="80dp">
+
+
+    </scret.com.msx7.josn.effectdemo.effect.anim1.CircleRectShape>
 </LinearLayout>

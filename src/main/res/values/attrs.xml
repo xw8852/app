@@ -2,8 +2,11 @@
 <resources>
     <declare-styleable name="CircleRectShape">
         <attr name="CircleStartAngle" format="integer" />.
-        <attr name="CircleEndAngle" format="integer" />.
+        <attr name="AngleLength" format="integer" />.
         <attr name="CircleAnimDuration" format="integer" />
+        <attr name="CircleDrawable" format="reference"/>
+        <attr name="DrawableHeight" format="dimension"/>
+        <attr name="ArcWidth" format="dimension"/>
     </declare-styleable>
     <declare-styleable name="AnimShape">
         <attr name="radius" format="dimension" />
