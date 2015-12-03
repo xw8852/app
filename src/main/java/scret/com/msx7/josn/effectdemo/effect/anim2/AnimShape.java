@@ -5,16 +5,10 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.PaintDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RoundRectShape;
-import android.graphics.drawable.shapes.Shape;
 import android.util.AttributeSet;
-import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import java.util.Arrays;
 
@@ -23,7 +17,7 @@ import scret.com.msx7.josn.effectdemo.R;
 /**
  * Created by Josn on 2015/10/31.
  */
-public class AnimShape extends FrameLayout {
+public class AnimShape extends LinearLayout {
 
 
     public AnimShape(Context context, AttributeSet attrs) {
@@ -33,7 +27,7 @@ public class AnimShape extends FrameLayout {
 
     public AnimShape(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context.obtainStyledAttributes(attrs, R.styleable.AnimShape,defStyleAttr,0));
+        init(context.obtainStyledAttributes(attrs, R.styleable.AnimShape, defStyleAttr, 0));
     }
 
     Paint paintRect;
@@ -74,18 +68,34 @@ public class AnimShape extends FrameLayout {
         }
         drawable.setColor(color);
         drawable.setStroke((int) strokeWidth, storkColor);
-        setBackgroundDrawable(drawable);
     }
 
 
     public void setRadius(float[] radius) {
         drawable.setCornerRadii(radius);
-        setBackgroundDrawable(drawable);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param canvas
+     */
+    @Override
+    protected void dispatchDraw(Canvas canvas) {
+        if (getChildCount() > 0 && drawable != null) {
+            Rect rect = new Rect();
+            getChildAt(0).getHitRect(rect);
+            drawable.setBounds(0, 0, rect.width(), rect.height());
+            canvas.translate(rect.left, rect.top);
+            drawable.draw(canvas);
+        }
+        super.dispatchDraw(canvas);
     }
 
 

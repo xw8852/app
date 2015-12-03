@@ -114,8 +114,14 @@ public class CircleRectShape extends View {
                  * 在分割点右边的分2部分求值
                  */
                 PointF point = new PointF(event.getX(), event.getY());
-                if (point.y > dst.y && point.x < dividerPoint.x) {
-                    _angle = 0;
+                if (point.y > dst.y) {
+                    if (point.y - dst.y < getResources().getDisplayMetrics().density * 4) {
+                        if (point.x < dividerPoint.x)
+                            _angle = 0;
+                        else if (point.x > dividerPoint.x) _angle = AngleLength;
+                        invalidate();
+                    }
+
                 } else if (point.x > dividerPoint.x) {
                     float cosa = getCosA(dividerPoint, center, point);
                     _angle = dividerAngle + (float) (Math.acos(cosa) * 180 / Math.PI);
